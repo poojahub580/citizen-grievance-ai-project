@@ -1,11 +1,16 @@
+from fastapi import FastAPI
+from pydantic import BaseModel
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 
+# Create FastAPI app
+app = FastAPI()
+
 # Load dataset
 df = pd.read_csv("water.csv")
 
-# Remove empty values (NaN)
+# Remove empty values
 df = df.dropna()
 
 # Features and target
@@ -19,10 +24,10 @@ vectorizer = TfidfVectorizer(
     max_features=3000
 )
 
-# Convert text to numbers
+# Convert text into vectors
 X_vectorized = vectorizer.fit_transform(X)
 
-# Improved model
+# Train model
 model = LogisticRegression(
     max_iter=3000,
     C=5,
@@ -30,17 +35,20 @@ model = LogisticRegression(
     random_state=42
 )
 
-# Train model
 model.fit(X_vectorized, y)
 
-# Take complaint from user
-user_input = input("Enter complaint: ")
+# Input format
+class Complaint(BaseModel):
+    complaint: str
 
-# Convert complaint text
-user_vector = vectorizer.transform([user_input])
+# Prediction API
+@app.post("/predict")
+def predict(data: Complaint):
 
-# Predict sentiment
-prediction = model.predict(user_vector)
+    text = vectorizer.transform([data.complaint])
+    prediction = model.predict(text)
 
-# Output
-print("Predicted Sentiment:", prediction[0])
+    return {
+        "complaint": data.complaint,
+        "predicted_sentiment": prediction[0]
+    }

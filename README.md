@@ -1,7 +1,8 @@
-# Citizen Grievance AI - Water Department
+Citizen Grievance AI - Water Department
 
-## Project Overview
-Citizen Grievance AI is an NLP-based complaint classification system developed for the Water Department. The system analyzes citizen complaints and predicts sentiment categories of water-related issues.
+Project Overview
+
+Citizen Grievance AI is an NLP-based complaint classification system developed for the Water Department. The system analyzes water-related citizen complaints and predicts the sentiment category of issues using Machine Learning and Natural Language Processing (NLP).
 
 The model classifies complaints into:
 
@@ -10,42 +11,48 @@ The model classifies complaints into:
 - Neutral
 - Positive
 
-Example:
+Example
 
 Input:
-```text
-No water supply in our locality
-```
+
+Leakage in water pipeline
 
 Output:
-```text
+
 Critical
-```
 
 ---
 
-## Features
-- NLP-based complaint sentiment analysis
-- TF-IDF text vectorization
-- Logistic Regression model
-- Complaint prediction system
-- Exploratory Data Analysis (EDA)
-- Confusion Matrix visualization
-- Word Cloud generation
+Features
+
+✔ NLP-based complaint sentiment analysis
+✔ TF-IDF text vectorization
+✔ Logistic Regression classification model
+✔ Complaint sentiment prediction system
+✔ Exploratory Data Analysis (EDA)
+✔ Data visualization graphs
+✔ FastAPI integration for real-time prediction
+✔ Swagger API documentation ("/docs")
 
 ---
 
-## Technologies Used
+Technologies Used
+
 - Python
 - Pandas
+- NumPy
 - Scikit-learn
 - Matplotlib
 - Jupyter Notebook
+- FastAPI
+- Uvicorn
 - VS Code
+- Git & GitHub
 
 ---
 
-## Dataset
+Dataset
+
 The dataset contains water-related citizen complaints categorized into sentiment labels:
 
 - Critical
@@ -54,74 +61,84 @@ The dataset contains water-related citizen complaints categorized into sentiment
 - Positive
 
 Dataset File:
-`water.csv`
+"water.csv"
 
 ---
 
-## Project Structure
+Project Structure
 
-```text
-water-grievance-ai
+citizen-grievance-ai
 │── water.csv
 │── water_eda.ipynb
 │── train_model.py
 │── predict.py
+│── api.py
+│── vectorize_text.py
 │── README.md
-```
 
 ---
 
-## Model Used
+Model Used
 
-### TF-IDF Vectorization
-Used to convert complaint text into numerical form.
+TF-IDF Vectorization
 
-### Logistic Regression
-Used for complaint sentiment classification.
+Used to convert complaint text into numerical form for machine learning.
+
+Logistic Regression
+
+Used as the classification algorithm for sentiment prediction.
 
 ---
 
-## Model Accuracy
+Model Accuracy
+
 Achieved approximately:
 
-**82.5%**
+80% accuracy
 
-accuracy on the Water grievance dataset.
+on the Water grievance dataset.
 
 ---
 
-## How to Run
+How to Run the Project
 
-### Install dependencies
-```bash
-pip install pandas scikit-learn matplotlib jupyter notebook
-```
+Install Dependencies
 
-### Train model
-```bash
-python train_model.py
-```
+pip install pandas scikit-learn matplotlib jupyter notebook fastapi uvicorn
 
-### Predict complaint sentiment
-```bash
+Run Prediction
+
 python predict.py
-```
+
+Run FastAPI
+
+uvicorn api:app --reload
 
 ---
 
-## Sample Prediction
+API Documentation
 
-Input:
-```text
-Water pipeline repaired successfully
-```
+Open browser:
 
-Output:
-```text
-Positive
-```
+http://127.0.0.1:8000/docs
+
+Swagger UI allows testing complaint predictions directly through the browser.
+
+Sample API Request
+
+{
+  "complaint": "Leakage in water pipeline"
+}
+
+Sample API Response
+
+{
+  "complaint": "Leakage in water pipeline",
+  "predicted_sentiment": "Critical"
+}
 
 ---
 
-## Author
-(Project Team)
+Author
+
+[pooja gupta]

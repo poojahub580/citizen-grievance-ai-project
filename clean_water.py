@@ -24,4 +24,3 @@ df["cleaned_text"] = df["complaint_text"].apply(clean_text)
 
 # Show result
 print(df[["complaint_text", "cleaned_text"]].head())
-print("hello")
