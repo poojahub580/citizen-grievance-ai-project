@@ -1,54 +1,39 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
+import joblib
 
 # Create FastAPI app
 app = FastAPI()
 
-# Load dataset
-df = pd.read_csv("water.csv")
+# Load saved model and text encoder
+model = joblib.load("grievance_model.pkl")
+vectorizer = joblib.load("text_encoder.pkl")
 
-# Remove empty values
-df = df.dropna()
 
-# Features and target
-X = df["complaint_text"]
-y = df["sentiment"]
-
-# Better text processing
-vectorizer = TfidfVectorizer(
-    ngram_range=(1, 3),
-    stop_words="english",
-    max_features=3000
-)
-
-# Convert text into vectors
-X_vectorized = vectorizer.fit_transform(X)
-
-# Train model
-model = LogisticRegression(
-    max_iter=3000,
-    C=5,
-    class_weight="balanced",
-    random_state=42
-)
-
-model.fit(X_vectorized, y)
-
-# Input format
+# Input structure
 class Complaint(BaseModel):
     complaint: str
+
 
 # Prediction API
 @app.post("/predict")
 def predict(data: Complaint):
 
+    # Convert complaint text into vector
     text = vectorizer.transform([data.complaint])
+
+    # Predict sentiment
     prediction = model.predict(text)
 
     return {
         "complaint": data.complaint,
         "predicted_sentiment": prediction[0]
+    }
+
+
+# Home route
+@app.get("/")
+def home():
+    return {
+        "message": "Water Grievance AI API is running successfully"
     }
